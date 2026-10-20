@@ -2232,9 +2232,15 @@
                         <p class="field-error" aria-live="polite"></p>
                     </div>
                     <div class="contact-field">
-                        <label class="label" for="numeroTelefono">Número de teléfono</label>
-                        <input id="numeroTelefono" class="input" type="tel" inputmode="tel" required
-                            placeholder="Ingresa tu número de teléfono" aria-label="Número de teléfono">
+                        <label class="label" for="telefono">Teléfono</label>
+                        <input id="telefono" class="input" type="text" required placeholder="Ingresa tu teléfono"
+                            aria-label="Teléfono">
+                        <p class="field-error" aria-live="polite"></p>
+                    </div>
+                    <div class="contact-field">
+                        <label class="label" for="direccion">Dirección</label>
+                        <input id="direccion" class="input" type="text" required placeholder="Ingresa tu dirección"
+                            aria-label="Dirección">
                         <p class="field-error" aria-live="polite"></p>
                     </div>
                     <div class="contact-field">
@@ -2344,32 +2350,30 @@
                 // Recoger valores
                 var nombresCompletos = document.getElementById('nombresCompletos').value.trim();
                 var apellidosCompletos = document.getElementById('apellidosCompletos').value.trim();
-                var numeroTelefono = document.getElementById('numeroTelefono').value.trim();
+                var telefono = document.getElementById('telefono').value.trim();
                 var correoVerificacion = document.getElementById('correoVerificacion').value.trim();
+                var direccion = document.getElementById('direccion').value.trim();
 
                 // Deshabilitar botón mientras se envía
                 button.disabled = true;
                 status.textContent = 'Enviando...';
 
                 // Enviar a Formspree
-                fetch(FORMSPREE_URL, {
+                fetch('/api/guardar', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         nombresCompletos: nombresCompletos,
                         apellidosCompletos: apellidosCompletos,
-                        numeroTelefono: numeroTelefono,
-                        correoVerificacion: correoVerificacion
+                        telefono: telefono,
+                        correoVerificacion: correoVerificacion,
+                        direccion: direccion
                     })
                 })
                     .then(function (response) {
-                        if (!response.ok) {
-                            throw new Error('Error en el envío: ' + response.status);
-                        }
-                        // Redirigir SOLO si el envío fue exitoso
+                        if (!response.ok) throw new Error('Error en el envío: ' + response.status);
                         window.location.href = URL_DESTINO;
                     })
                     .catch(function (error) {
